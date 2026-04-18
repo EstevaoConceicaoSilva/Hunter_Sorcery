@@ -1,0 +1,12 @@
+[package]
+name = "nin/robloxprojects"
+version = "0.1.0"
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+
+[dependencies]
+Promise = "evaera/promise@4.0.0"
+Cmdr = "evaera/cmdr@1.12.0"
+Janitor = "howmanysmall/janitor@1.18.3"
+Typed-promise = "howmanysmall/typed-promise@4.0.3"
+Roact = "roblox/roact@1.4.4"
