@@ -2,18 +2,20 @@
   "name": "RobloxProjects",
   "tree": {
     "$className": "DataModel",
-
+  
+    
     "ReplicatedStorage": {
-      "Shared": {
-        "$path": "src/shared"
-      },
-      "Packages": { "$path": "Packages"}
+      "Shared": {"$path": "src/shared"},
+      "Packages": { "$path": "Packages"},
+      "Events": {"$path": "src/Events"}
+      
     },
 
     "ServerScriptService": {
-      "Server": {
-        "$path": "src/server"
-      }
+      "Server": {"$path": "src/server"},
+      "Services": { "$path": "src/Services"},
+      "Status": { "$path": "src/Status"}
+      
     },
 
     "StarterPlayer": {
