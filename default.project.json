@@ -14,7 +14,8 @@
     "ServerScriptService": {
       "Server": {"$path": "src/server"},
       "Services": { "$path": "src/Services"},
-      "Status": { "$path": "src/Status"}
+      "Configs": { "$path": "src/Configs"},
+      "Handlers": { "$path": "src/Handlers"}
       
     },
 
@@ -25,6 +26,10 @@
         }
       }
     },
+    
+    "StarterGui": {"$path": "src/StarterGui" },
+      
+    
 
     "SoundService": {
       "$properties": {

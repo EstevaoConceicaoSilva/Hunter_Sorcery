@@ -97,7 +97,8 @@ function ClientService.sendStats(player)
 		return
 	end
 	UpdateHud:FireClient(player, "stats", {
-		StatsBase = profile.StatsBase,
+		StatsBase = profile.Stats,
+		Profile = profile.Profile,
 	})
 end
 

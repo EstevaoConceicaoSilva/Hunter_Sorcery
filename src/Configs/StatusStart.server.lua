@@ -2,8 +2,7 @@ local Players = game:GetService("Players")
 local ServerScriptService = game:GetService("ServerScriptService")
 local ProfileService = require(ServerScriptService.Services.ProfileService)
 local ClientService = require(ServerScriptService.Services.ClientService)
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local UpdateHud = ReplicatedStorage:WaitForChild("Events"):WaitForChild("UpdateHud")
+local StatsCalculator = require(ServerScriptService.Services.StatsCalculator)
 
 Players.PlayerAdded:Connect(function(player)
 	local profile
@@ -18,19 +17,19 @@ Players.PlayerAdded:Connect(function(player)
 		return
 	end
 
-	-- Lembre-se de usar .Data para acessar as informações do ProfileService
-	local stats = profile.StatsBase
+	local stats = profile.Stats
 
-	-- 1. CÁLCULO DOS MÁXIMOS (Sua lógica: Base + Pontos * 0.3)
-	local calculatedMaxStamina = math.floor(stats.BaseStaminaEnergy + (stats.Dexterity * 0.3))
-	local calculatedMaxNen = math.floor(stats.BaseNenEnergy + (stats.Nen * 0.5))
-	local calculatedMaxHealth = math.floor(100 + (stats.Constitution * stats.Multipliers.Health * 50))
+	-- Calcula stats iniciais
+	StatsCalculator.calculate(profile)
+
+	local calculatedMaxStamina = stats.Calculated.MaxStamina
+	local calculatedMaxNen = stats.Calculated.MaxNen
+	local calculatedMaxHealth = stats.Calculated.MaxHealth
 
 	local statusFolder = player:FindFirstChild("Status") or Instance.new("Folder")
 	statusFolder.Name = "Status"
 	statusFolder.Parent = player
 
-	-- STAMINA
 	local currentStamina = Instance.new("NumberValue")
 	currentStamina.Name = "CurrentStaminaValue"
 	currentStamina.Value = calculatedMaxStamina
@@ -41,7 +40,6 @@ Players.PlayerAdded:Connect(function(player)
 	maxStamina.Value = calculatedMaxStamina
 	maxStamina.Parent = statusFolder
 
-	-- NEN
 	local currentNen = Instance.new("NumberValue")
 	currentNen.Name = "CurrentNenValue"
 	currentNen.Value = calculatedMaxNen
@@ -52,7 +50,6 @@ Players.PlayerAdded:Connect(function(player)
 	maxNen.Value = calculatedMaxNen
 	maxNen.Parent = statusFolder
 
-	-- Cria os Values
 	local currentHealth = Instance.new("NumberValue")
 	currentHealth.Name = "CurrentHealthValue"
 	currentHealth.Value = calculatedMaxHealth
@@ -76,10 +73,8 @@ Players.PlayerAdded:Connect(function(player)
 	setupHumanoid(player.Character or player.CharacterAdded:Wait())
 	player.CharacterAdded:Connect(setupHumanoid)
 
-	player:SetAttribute("MaxStamina", calculatedMaxStamina)
-	player:SetAttribute("MaxNen", calculatedMaxNen)
-	task.wait(0.1)
+	task.wait(1)
 	ClientService.sendAll(player)
-	--  ATUALIZA ATTRIBUTES (Sincronização extra para UI)
-	print("✅ Energias de " .. player.Name .. " carregadas com sucesso!")
+
+	print("✅ Energias e Stats de " .. player.Name .. " carregados!")
 end)

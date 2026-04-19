@@ -2,10 +2,10 @@ return {
 	Profile = {
 		Races = "Human",
 		Clan = "None",
+		Bloodline = "None",
 		Traits = "None", --Mudou de array para string
-		Artifacts = "None", -- mesma coisa
-		Haki_Color = "None",
-		Aura = "None",
+		Artifacts = "None", -- irei fazer mais tarde
+		nen_Color = "None",
 		NenType = "None",
 		NenTraits = {},
 	},
@@ -15,32 +15,57 @@ return {
 		Fragments = 0,
 	},
 
-	StatsBase = {
-		-- [INTEGERS] Atributos de Progressão (Pontos que o player gasta)
-		Strength = 1, -- Multiplica o dano base do click
-		Constitution = 1, -- Multiplica a vida base
-		Dexterity = 1, -- Multiplica a Stamina e gera Defesa passiva
-		Nen = 1, -- Multiplica a reserva de energia
+	--adicionado Sistema de Exp e alocação de pontos, Sistema mais Complexo para salvar Buffs ,
+	--Sistema para salvar os stats calculados,Base para o sistema de equipamentos e inventário.
 
-		-- [INTEGERS] Valores de Status Atuais (Calculados)
-		BaseNenEnergy = 100,
-		BaseStaminaEnergy = 100,
+	Stats = {
+		Level = 1,
+		Experience = 0,
+		ExperienceToNextLevel = 100,
+		AvailablePoints = 0,
 
-		Defense = 0, -- Valor bruto de armaduras (Soma)
+		Strength = 1,
+		Constitution = 1,
+		Dexterity = 1,
+		Intelligence = 1,
 
-		-- [FLOATS] Multiplicadores (Buffs de Clã, Raça e Itens)
-		-- O valor 1.0 significa 100% (Sem bônus)
-		Multipliers = {
-			Str = 1.0, -- Ex: Clã bombado coloca 1.5 aq
-			Def = 1.0, -- Ex: Dexterity + Armadura multiplicado por isso
-			Health = 1.0, -- Ex: Raça Tanque coloca 1.2 aq
-			Dmg = 1.0, -- Buff de dano geral (Final)
-			Nen = 1.0, -- Buff de reserva ou regeneração de Nen
+		FixedBuffs = {
+			Strength = 0,
+			Constitution = 0,
+			Dexterity = 0,
+			Intelligence = 0,
+			CritChance = 0,
+			CritDamage = 0,
+			WalkSpeed = 0,
+			Multipliers = {
+				Str = 1.0,
+				Health = 1.0,
+				Def = 1.0,
+				Dmg = 1.0,
+			},
 		},
 
-		-- [FLOATS] Status de Combate (Porcentagens)
-		Crit_Chance = 5, -- 5% (Tratado como Float 0.05 no código)
-		Crit_Damage = 150, -- 150% (Tratado como Float 1.5 no código)
-		DamageBlock = 0, -- % de redução direta
+		Calculated = {
+			MaxHealth = 100,
+			MaxStamina = 100,
+			MaxNen = 100,
+			AttackPower = 10,
+			Defense = 0,
+			CritChance = 5,
+			CritDamage = 100,
+			WalkSpeed = 16,
+		},
 	},
+
+	Equipment = {
+		Helmet = nil,
+		Chest = nil,
+		Legs = nil,
+		Boots = nil,
+		Weapon = nil,
+		Accessory1 = nil,
+		Accessory2 = nil,
+	},
+
+	Inventory = {},
 }
