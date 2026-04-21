@@ -7,7 +7,7 @@ function StatsCalculator.calculate(profile)
 	local stats = profile.Stats
 
 	local raceBuff = BuffsConfig.Races[profile.Profile.Race] or BuffsConfig.Races.Human
-	local clanBuff = BuffsConfig.Clans[profile.Profile.Clan] or BuffsConfig.Clans.Default
+	local clanBuff = BuffsConfig.Clans[profile.Profile.Clan] or BuffsConfig.Clans.None
 	local bloodlineBuff = BuffsConfig.Bloodlines[profile.Profile.Bloodline] or BuffsConfig.Bloodlines.None
 
 	stats.FixedBuffs.Strength = raceBuff.Strength
@@ -65,7 +65,7 @@ function StatsCalculator.calculate(profile)
 	stats.Calculated.AttackPower = math.floor((10 + (finalStr * 2)) * totalMult.Str * totalMult.Dmg)
 	stats.Calculated.Defense = math.floor((finalDex * 1.5) * totalMult.Def)
 	stats.Calculated.CritChance = 5 + stats.FixedBuffs.CritChance
-	stats.Calculated.CritDamage = 150 + stats.FixedBuffs.CritDamage
+	stats.Calculated.CritDamage = 100 + stats.FixedBuffs.CritDamage
 	stats.Calculated.WalkSpeed = 16 + stats.FixedBuffs.WalkSpeed
 
 	return stats.Calculated

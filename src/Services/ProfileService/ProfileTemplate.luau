@@ -1,6 +1,6 @@
 return {
 	Profile = {
-		Races = "Human",
+		Race = "Human",
 		Clan = "None",
 		Bloodline = "None",
 		Traits = "None", --Mudou de array para string

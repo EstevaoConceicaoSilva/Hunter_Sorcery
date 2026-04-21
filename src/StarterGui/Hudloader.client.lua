@@ -312,6 +312,16 @@ UpdateHud.OnClientEvent:Connect(function(updateType, data)
 		end
 	end
 
+	if updateType == "all" or updateType == "stats" then
+		if not data.Stats then
+			return
+		end
+		levelLabel.Text = "Level " .. (data.Stats.Level or 1)
+		if data.Stats.Experience and data.Stats.ExperienceToNextLevel then
+			updateBar(expFill, expValue, data.Stats.Experience, data.Stats.ExperienceToNextLevel)
+		end
+	end
+
 	if updateType == "all" or updateType == "currencies" then
 		if data.Fragments then
 			fragValue.Text = formatNumber(data.Fragments)

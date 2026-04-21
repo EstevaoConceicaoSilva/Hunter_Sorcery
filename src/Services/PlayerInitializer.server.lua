@@ -2,7 +2,6 @@ local players = game:GetService("Players")
 local ServerScriptService = game:GetService("ServerScriptService")
 local HttpService = game:GetService("HttpService")
 local ProfileService = require(ServerScriptService.Services.ProfileService)
-local EconomyService = require(ServerScriptService.Services.EconomyService)
 
 local playersSaved = {}
 

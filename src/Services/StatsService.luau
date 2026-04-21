@@ -84,6 +84,9 @@ function StatsService.allocatePoint(player: Player, statName: string)
 	StatsCalculator.calculate(profile)
 	ClientService.sendStats(player)
 
+	local SyncStats = require(ServerScriptService.Services.SyncStats)
+	SyncStats.syncPlayer(player)
+
 	return true, "Ponto alocado"
 end
 
@@ -104,6 +107,9 @@ function StatsService.resetStats(player: Player)
 
 	StatsCalculator.calculate(profile)
 	ClientService.sendStats(player)
+
+	local SyncStats = require(ServerScriptService.Services.SyncStats)
+	SyncStats.syncPlayer(player)
 
 	return true
 end

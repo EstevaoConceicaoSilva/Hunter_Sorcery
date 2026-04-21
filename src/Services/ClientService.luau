@@ -26,7 +26,8 @@ local function collectData(player)
 	return {
 		Fragments = profile.Currencies.Fragments,
 		Money = profile.Currencies.Money,
-		StatsBase = profile.StatsBase,
+		Stats = profile.Stats,
+		Profile = profile.Profile,
 		CurrentStamina = getValue("CurrentStaminaValue"),
 		MaxStamina = getValue("MaxStaminaValue"),
 		CurrentNen = getValue("CurrentNenValue"),
@@ -92,12 +93,12 @@ end
 
 -- Envia só stats
 function ClientService.sendStats(player)
-	local profile = ProfileService.getProfile(player)
+	local profile = collectData(player)
 	if not profile then
 		return
 	end
 	UpdateHud:FireClient(player, "stats", {
-		StatsBase = profile.Stats,
+		Stats = profile.Stats,
 		Profile = profile.Profile,
 	})
 end
@@ -106,7 +107,7 @@ end
 Players.PlayerAdded:Connect(function(player)
 	local profile
 	local attempts = 0
-	while not profile and attempts < 100 do
+	while not profile and attempts < 5 do
 		task.wait(0.1)
 		attempts += 1
 		profile = ProfileService.getProfile(player)

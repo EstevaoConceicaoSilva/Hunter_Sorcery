@@ -6,7 +6,7 @@ local ClientService = require(ServerScriptService.Services.ClientService)
 local ExperienceService = {}
 
 local function calculateExpForLevel(level)
-	return math.floor(100 * (level ^ 1.5))
+	return math.floor(100 * (level ^ 0.8))
 end
 
 function ExperienceService.addExperience(player: Player, amount: number)
