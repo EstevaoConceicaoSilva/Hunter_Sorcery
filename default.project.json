@@ -7,15 +7,16 @@
     "ReplicatedStorage": {
       "Shared": {"$path": "src/shared"},
       "Packages": { "$path": "Packages"},
-      "Events": {"$path": "src/Events"}
+      "Events": {"$path": "src/Events"},
+      "GeneralConfigs": { "$path": "src/GeneralConfigs"}
       
     },
 
     "ServerScriptService": {
       "Server": {"$path": "src/server"},
       "Services": { "$path": "src/Services"},
-      "Configs": { "$path": "src/Configs"},
-      "Handlers": { "$path": "src/Handlers"}
+      "Handlers": { "$path": "src/Handlers"},
+      "Configs": { "$path": "src/Configs"}
       
     },
 

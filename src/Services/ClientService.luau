@@ -2,6 +2,7 @@ local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
 local ProfileService = require(ServerScriptService.Services.ProfileService)
+local GeneralConfig = require(ReplicatedStorage.GeneralConfigs.GeneralConfig)
 
 -- Remotes
 local events = ReplicatedStorage:WaitForChild("Events")
@@ -15,6 +16,14 @@ local function collectData(player)
 	local profile = ProfileService.getProfile(player)
 	if not profile then
 		return nil
+	end
+
+	-- Lê os eventos ativos na hora que o cara entra
+	local activeEvents = {}
+	for eventName, eventData in pairs(GeneralConfig.Events) do
+		if eventData.Active then
+			table.insert(activeEvents, { Name = eventName })
+		end
 	end
 
 	local statusFolder = player:FindFirstChild("Status")
@@ -32,6 +41,7 @@ local function collectData(player)
 		MaxStamina = getValue("MaxStaminaValue"),
 		CurrentNen = getValue("CurrentNenValue"),
 		MaxNen = getValue("MaxNenValue"),
+		ActiveEvents = activeEvents,
 	}
 end
 
@@ -60,17 +70,15 @@ OnClientUpdate.OnServerEvent:Connect(function(player, action)
 	end
 end)
 
--- Envia só as currencies
-function ClientService.sendCurrencies(player)
-	local profile = ProfileService.getProfile(player)
+-- Envia só stats
+function ClientService.sendStats(player)
+	local profile = collectData(player)
 	if not profile then
-		warn("sendCurrencies: perfil nil para " .. player.Name)
 		return
 	end
-	print("Enviando currencies:", profile.Currencies.Money, profile.Currencies.Fragments)
-	UpdateHud:FireClient(player, "currencies", {
-		Fragments = profile.Currencies.Fragments,
-		Money = profile.Currencies.Money,
+	UpdateHud:FireClient(player, "stats", {
+		Stats = profile.Stats,
+		Profile = profile.Profile,
 	})
 end
 
@@ -88,18 +96,6 @@ function ClientService.sendEnergies(player)
 		MaxNen = getValue("MaxNenValue"),
 		CurrentHealth = getValue("CurrentHealthValue"), -- ✅ novo
 		MaxHealth = getValue("MaxHealthValue"), -- ✅ novo
-	})
-end
-
--- Envia só stats
-function ClientService.sendStats(player)
-	local profile = collectData(player)
-	if not profile then
-		return
-	end
-	UpdateHud:FireClient(player, "stats", {
-		Stats = profile.Stats,
-		Profile = profile.Profile,
 	})
 end
 
@@ -126,5 +122,35 @@ Players.PlayerAdded:Connect(function(player)
 		end
 	end
 end)
+
+-- Envia só as currencies
+function ClientService.sendCurrencies(player)
+	local profile = ProfileService.getProfile(player)
+	if not profile then
+		warn("sendCurrencies: perfil nil para " .. player.Name)
+		return
+	end
+	print("Enviando currencies:", profile.Currencies.Money, profile.Currencies.Fragments)
+	UpdateHud:FireClient(player, "currencies", {
+		Fragments = profile.Currencies.Fragments,
+		Money = profile.Currencies.Money,
+	})
+end
+
+function ClientService.sendEvents(player)
+	local activeEvents = {}
+
+	-- Correção: pairs só retorna CHAVE e VALOR
+	for eventName, eventData in pairs(GeneralConfig.Events) do
+		if eventData.Active then
+			table.insert(activeEvents, {
+				Name = eventName,
+				-- Você pode adicionar mais coisas aqui se quiser, ex: Multiplier = eventData.Multiplier
+			})
+		end
+	end
+
+	UpdateHud:FireClient(player, "events", { ActiveEvents = activeEvents })
+end
 
 return ClientService

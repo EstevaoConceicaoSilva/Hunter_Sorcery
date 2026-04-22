@@ -9,6 +9,7 @@ local playerGui = player:WaitForChild("PlayerGui")
 
 local UpdateHud = ReplicatedStorage:WaitForChild("Events"):WaitForChild("UpdateHud")
 local OnClientUpdate = ReplicatedStorage:WaitForChild("Events"):WaitForChild("OnClientUpdate")
+local GeneralConfig = require(ReplicatedStorage.GeneralConfigs.GeneralConfig)
 
 -- 1. Pede os dados ao servidor
 OnClientUpdate:FireServer("ready")
@@ -230,6 +231,9 @@ end
 local fragValue = createCurrency("Frags", "◆", Color3.fromRGB(239, 159, 39), 2)
 local moneyValue = createCurrency("Money", "◆", Color3.fromRGB(100, 200, 100), 3)
 
+--===========================================
+-- Logica parar Atualizar a HUD
+--===========================================
 -- 4. Popula com os dados iniciais
 local function formatNumber(n)
 	if not n then
@@ -306,19 +310,25 @@ UpdateHud.OnClientEvent:Connect(function(updateType, data)
 		return
 	end
 
-	if updateType == "all" or updateType == "energies" then
-		if data.CurrentStamina and data.MaxStamina then
-			updateBar(staminaFill, staminaVal, data.CurrentStamina, data.MaxStamina)
-		end
-	end
-
 	if updateType == "all" or updateType == "stats" then
 		if not data.Stats then
 			return
 		end
+
 		levelLabel.Text = "Level " .. (data.Stats.Level or 1)
-		if data.Stats.Experience and data.Stats.ExperienceToNextLevel then
-			updateBar(expFill, expValue, data.Stats.Experience, data.Stats.ExperienceToNextLevel)
+		if data.Stats.Level == GeneralConfig.Config.MaxLevel then
+			expValue.Text = "MAX"
+			expFill.Size = UDim2.fromScale(0, 0)
+		else
+			if data.Stats.Experience and data.Stats.ExperienceToNextLevel then
+				updateBar(expFill, expValue, data.Stats.Experience, data.Stats.ExperienceToNextLevel)
+			end
+		end
+	end
+
+	if updateType == "all" or updateType == "energies" then
+		if data.CurrentStamina and data.MaxStamina then
+			updateBar(staminaFill, staminaVal, data.CurrentStamina, data.MaxStamina)
 		end
 	end
 

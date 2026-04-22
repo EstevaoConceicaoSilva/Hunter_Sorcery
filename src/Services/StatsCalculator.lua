@@ -1,5 +1,7 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
 local BuffsConfig = require(ServerScriptService.Configs.BuffsConfig)
+local GeneralConfig = require(ReplicatedStorage.GeneralConfigs.GeneralConfig)
 
 local StatsCalculator = {}
 
@@ -59,14 +61,16 @@ function StatsCalculator.calculate(profile)
 		Dmg = stats.FixedBuffs.Multipliers.Dmg * equipBuffs.Multipliers.Dmg,
 	}
 
-	stats.Calculated.MaxHealth = math.floor((100 + (finalCon * 10) + equipBuffs.Health) * totalMult.Health)
-	stats.Calculated.MaxStamina = math.floor(100 + (finalDex * 5))
-	stats.Calculated.MaxNen = math.floor(100 + (finalInt * 8))
-	stats.Calculated.AttackPower = math.floor((10 + (finalStr * 2)) * totalMult.Str * totalMult.Dmg)
+	stats.Calculated.MaxHealth =
+		math.floor((GeneralConfig.Config.MaxHealth + (finalCon * 10) + equipBuffs.Health) * totalMult.Health)
+	stats.Calculated.MaxStamina = math.floor(GeneralConfig.Config.MaxStamina + (finalDex * 5))
+	stats.Calculated.MaxNen = math.floor(GeneralConfig.Config.MaxNen + (finalInt * 8))
+	stats.Calculated.AttackPower =
+		math.floor((GeneralConfig.Config.BaseAttackPower + (finalStr * 2)) * totalMult.Str * totalMult.Dmg)
 	stats.Calculated.Defense = math.floor((finalDex * 1.5) * totalMult.Def)
-	stats.Calculated.CritChance = 5 + stats.FixedBuffs.CritChance
-	stats.Calculated.CritDamage = 100 + stats.FixedBuffs.CritDamage
-	stats.Calculated.WalkSpeed = 16 + stats.FixedBuffs.WalkSpeed
+	stats.Calculated.CritChance = GeneralConfig.Config.BaseCritChance + stats.FixedBuffs.CritChance
+	stats.Calculated.CritDamage = GeneralConfig.Config.BaseCritDamage + stats.FixedBuffs.CritDamage
+	stats.Calculated.WalkSpeed = GeneralConfig.Config.BaseWalkSpeed + stats.FixedBuffs.WalkSpeed
 
 	return stats.Calculated
 end

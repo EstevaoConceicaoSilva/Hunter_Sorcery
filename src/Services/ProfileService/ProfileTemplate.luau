@@ -28,6 +28,8 @@ return {
 		Constitution = 1,
 		Dexterity = 1,
 		Intelligence = 1,
+		Luck = 1.0, -- porcentagem vai de floa 1.0 a 2.0, onde 1.0 é 100% de chance base, 1.5 é +50% de chance, 0.8 é -20% de chance, etc.
+		DropRateBoost = 1.0, -- porcentagem de boost de drop, funciona igual a sorte, onde 1.0 é 100% de chance base, 1.5 é +50% de chance, 0.8 é -20% de chance, etc.
 
 		FixedBuffs = {
 			Strength = 0,
